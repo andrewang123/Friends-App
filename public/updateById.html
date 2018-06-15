@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Andrew Ang">
+		<title>Add a friend</title>
+		<link href="http://leia.cs.spu.edu/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body class = "container">
+            <h2>Update Friend By ID</h2>
+		<form  method="put">
+			<div> 
+				   <label for="birthdate">Birth Date:</label>
+				   <input type="text" id="birthdate" name="birthdate">
+			</div>
+			<div>		
+	     		<label for="firstname">First Name:</label>
+			           <input type="text" id="firstname" name="firstname">
+			</div>	
+			<div>	       	
+	     		<label for="lastname">Last Name:</label>
+				    <input type="text" id="lastname" name="lastname"></textarea>
+			</div>
+			<div>	
+	    			<label for="gender">Gender:</label>
+				<input type="text" id="gender" name="gender"></textarea>
+			</div>
+			<div>
+				<label for="phone">Phone:</label>
+				    <input type="text" id="phone" name="phone"></textarea>
+		    	</div>
+	
+		          <label for="id">ID of Friend:</label>
+			      <input type="number" id="id" name="id">
+	    			<button type="button" onclick = "updateFriendID()">Update Friend</button>
+			</br>
+			</form>
+
+			<div class="jumbotron" style="">
+			  <div id="output"> </div>
+			  </div>
+		 <script>
+			var arr;
+			function updateFriendID() {
+				var idNum = document.getElementById("id").value;
+				console.log(idNum);
+				var url = "http://leia.cs.spu.edu:3014/api/" + idNum;
+				var birth = document.getElementById("birthdate").value;
+				var first = document.getElementById("firstname").value;
+				var last = document.getElementById("lastname").value;
+				var gend = document.getElementById("gender").value;
+				var phoneNum = document.getElementById("phone").value;
+				
+					
+				var theDate = new Date(birth);
+				var xhttp = new XMLHttpRequest();
+				var obj = {
+					birthDate : theDate,
+					firstName : first,
+					lastName : last,
+					gender : gend,
+					phone : phoneNum
+					
+				};
+				console.log(obj);
+
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+			      	if (this.readyState == 4 && this.status == 200) {
+					arr = JSON.parse(this.responseText);
+					console.log(arr);
+			
+			
+				var value = "<table class=\"table table-bordered table-hover\">\n"  +	
+                              		       "<thead>\n" +
+                                       	       "<tr>\n"  +
+                                               "<th scope=\"col\">Operation</th>\n"  +
+                                               "<th scope=\"col\">Affected Rows</th>\n"  +
+                                               "<th scope=\"col\">Status</th>\n"  +
+                                               "<th scope=\"col\">Message</th>\n"  +
+                                       "</tr>\n" +
+                               "</thead>\n" +
+                               "<tbody>\n" +
+                              	        "<tr>\n"  +
+					"<td>" + arr["operation"] + "</td>\n" +
+					"<td>" + arr["affectedRows"] + "</td>\n" +
+					"<td>" + arr["status"] + "</td>\n" +
+					"<td>" + arr["message"] + "</td>\n" +
+					"</tr> \n" +
+					"</tbody>\n" + "</table>\n";
+					document.getElementById("output").innerHTML = value;
+				}
+		      };	
+			      xhttp.open("PUT", url, true);
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			      xhttp.send(JSON.stringify(obj));
+			}	
+		</script>
+	</body>
+</html>

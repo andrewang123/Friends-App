@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Andrew Ang">
+		<title>Add a friend</title>
+		<link href="http://leia.cs.spu.edu/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body class = "container">
+            <h2>Delete Friend By ID</h2>
+	    <form>
+	          <label for="id">ID of Friend:</label>
+		      <input type="number" id="id" name="id">
+	    		<button type="button" onclick = "deleteFriendID()">Delete Friend</button>
+	    </form>
+			  <div class="jumbotron" style="">
+			  <div id="output"> </div>
+			  </div>
+		 <script>
+			var arr;
+			function deleteFriendID() {
+				var idNum = document.getElementById("id").value;
+				console.log(idNum);
+				var url = "http://leia.cs.spu.edu:3014/api/" + idNum;
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+			      	if (this.readyState == 4 && this.status == 200) {
+					arr = JSON.parse(this.responseText);
+					console.log(arr);
+			
+			
+				var value = "<table class=\"table table-bordered table-hover\">\n"  +	
+                              		       "<thead>\n" +
+                                       	       "<tr>\n"  +
+                                               "<th scope=\"col\">Operation</th>\n"  +
+                                               "<th scope=\"col\">Affected Rows</th>\n"  +
+                                               "<th scope=\"col\">Status</th>\n"  +
+                                               "<th scope=\"col\">Message</th>\n"  +
+                                       "</tr>\n" +
+                               "</thead>\n" +
+                               "<tbody>\n" +
+                              	        "<tr>\n"  +
+					"<td>" + arr["operation"] + "</td>\n" +
+					"<td>" + arr["affectedRows"] + "</td>\n" +
+					"<td>" + arr["status"] + "</td>\n" +
+					"<td>" + arr["message"] + "</td>\n" +
+					"</tr> \n" +
+					"</tbody>\n" + "</table>\n";
+					document.getElementById("output").innerHTML = value;
+				}
+		      };	
+			      xhttp.open("DELETE", url, true);
+			      xhttp.send();      
+			}	
+		</script>
+	</body>
+</html>
